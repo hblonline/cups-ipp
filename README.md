@@ -1,29 +1,27 @@
 # Cups IPP
 
-CUPS Implementation of IPP - PHP Client API
+Fork of the CUPS Implementation of IPP - PHP Client API
 
 CUPS (Common Unix Printing System) is a modular printing system for Unix-like computer operating systems which allows a computer to act as a print server. A computer running CUPS is a host that can accept print jobs from client computers, process them, and send them to the appropriate printer.
-
-[![Build Status](https://travis-ci.org/smalot/cups-ipp.png?branch=master)](https://travis-ci.org/smalot/cups-ipp)
-[![Current Version](https://poser.pugx.org/smalot/cups-ipp/v/stable.png)](https://packagist.org/packages/smalot/cups-ipp)
-[![composer.lock](https://poser.pugx.org/smalot/cups-ipp/composerlock)](https://packagist.org/packages/smalot/cups-ipp)
-
-[![Total Downloads](https://poser.pugx.org/smalot/cups-ipp/downloads.png)](https://packagist.org/packages/smalot/cups-ipp)
-[![Monthly Downloads](https://poser.pugx.org/smalot/cups-ipp/d/monthly)](https://packagist.org/packages/smalot/cups-ipp)
-[![Daily Downloads](https://poser.pugx.org/smalot/cups-ipp/d/daily)](https://packagist.org/packages/smalot/cups-ipp)
 
 
 ## Install via Composer
 
 You can install the component using [Composer](https://getcomposer.org/).
 
-````sh
-composer require smalot/cups-ipp
-````
-
-Then, require the `vendor/autoload.php` file to enable the autoloading mechanism provided by Composer.
-Otherwise, your application won't be able to find the classes of this component.
-
+```json
+require: {
+    //
+    "hblonline/cups-ipp": "^0.6.0",
+},
+"repositories": [
+    {
+	"type": "vcs",
+	"url": "git@github.com:hblonline/cups-ipp.git",
+	"no-api": true
+    }
+],
+```
 
 ## Requirements
 
