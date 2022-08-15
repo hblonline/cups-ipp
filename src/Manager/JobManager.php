@@ -2,13 +2,9 @@
 
 namespace Smalot\Cups\Manager;
 
-use Http\Client\HttpClient;
-use Smalot\Cups\Builder\Builder;
-use Smalot\Cups\CupsException;
 use Smalot\Cups\Model\Job;
 use Smalot\Cups\Model\JobInterface;
 use Smalot\Cups\Model\PrinterInterface;
-use Smalot\Cups\Transport\Response as CupsResponse;
 use GuzzleHttp\Psr7\Request;
 
 /**

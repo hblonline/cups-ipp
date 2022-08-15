@@ -5,28 +5,33 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Fixami Netherlands B.V.",
+            "email": "ict@fixami.com"
+        },
+        {
             "name": "Sebastien Malot",
             "email": "sebastien@malot.fr"
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "php-http/socket-client": "*",
-        "php-http/client-common": "*",
-        "php-http/message": "*",
-	"psr/http-client": "^1.0.1",
-        "guzzlehttp/psr7": "*",
+        "php": ">=8.1",
+        "guzzlehttp/guzzle": "^7.4",
+        "guzzlehttp/psr7": "^2.4",
+        "psr/http-client": "^1.0.1",
         "symfony/yaml": "*"
     },
     "require-dev": {
-        "symfony/debug": "*",
-        "atoum/atoum": "*"
+        "atoum/atoum": "*",
+        "symfony/var-dumper": "^6.1"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "suggest": {
-        "wapmorgan/file-type-detector": "Detects file type by filename or content and generates correct mimetype."
-    },
     "autoload": {
         "psr-4": {
             "Smalot\\Cups\\": "src/"

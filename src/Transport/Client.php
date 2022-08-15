@@ -2,116 +2,48 @@
 
 namespace Smalot\Cups\Transport;
 
-use GuzzleHttp\Psr7\Uri;
-use Http\Client\Common\Plugin\AddHostPlugin;
-use Http\Client\Common\Plugin\ContentLengthPlugin;
-use Http\Client\Common\Plugin\DecoderPlugin;
-use Http\Client\Common\Plugin\ErrorPlugin;
-use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Client\Socket\Client as SocketHttpClient;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Smalot\Cups\CupsException;
 
-/**
- * Class Client
- *
- * @package Smalot\Cups\Transport
- */
-class Client implements HttpClient
+class Client implements ClientInterface
 {
+    public const AUTHTYPE_BASIC = 'basic';
+    public const AUTHTYPE_DIGEST = 'digest';
 
-    const SOCKET_URL = 'unix:///var/run/cups/cups.sock';
+    protected ClientInterface $httpClient;
 
-    const AUTHTYPE_BASIC = 'basic';
+    protected string $authType = self::AUTHTYPE_BASIC;
+    protected ?string $username;
+    protected ?string $password;
 
-    const AUTHTYPE_DIGEST = 'digest';
-
-    /**
-     * @var HttpClient
-     */
-    protected $httpClient;
-
-    /**
-     * @var string
-     */
-    protected $authType;
-
-    /**
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * @var string
-     */
-    protected $password;
-
-    /**
-     * Client constructor.
-     *
-     * @param string $username
-     * @param string $password
-     * @param array $socketClientOptions
-     */
-    public function __construct($username = null, $password = null, $socketClientOptions = [])
+    public function __construct(string $baseUri, ?string $username = null, ?string $password = null)
     {
-        if (!is_null($username)) {
-            $this->username = $username;
+        if (empty($baseUri)) {
+            throw new CupsException('Remote socket is required');
         }
 
-        if (!is_null($password)) {
-            $this->password = $password;
+        if (!preg_match('/^https?/', $baseUri)) {
+            throw new CupsException('Only HTTP(S) connections are supported.');
         }
 
-        if (empty($socketClientOptions['remote_socket'])) {
-            $socketClientOptions['remote_socket'] = self::SOCKET_URL;
-        }
+        $this->setAuthentication($username, $password);
 
-        $messageFactory = new GuzzleMessageFactory();
-        $socketClient = new SocketHttpClient($messageFactory, $socketClientOptions);
-        $host = preg_match(
-          '/unix:\/\//',
-          $socketClientOptions['remote_socket']
-        ) ? 'http://localhost' : $socketClientOptions['remote_socket'];
-        $this->httpClient = new PluginClient(
-          $socketClient, [
-            new ErrorPlugin(),
-            new ContentLengthPlugin(),
-            new DecoderPlugin(),
-            new AddHostPlugin(new Uri($host)),
-          ]
-        );
-
-        $this->authType = self::AUTHTYPE_BASIC;
+        $this->httpClient = new \GuzzleHttp\Client([
+            'base_uri' => $baseUri,
+        ]);
     }
 
-    /**
-     * @param string $username
-     * @param string $password
-     *
-     * @return $this
-     */
-    public function setAuthentication($username, $password)
+    public function setAuthentication(?string $username, ?string $password): void
     {
         $this->username = $username;
         $this->password = $password;
-
-        return $this;
     }
 
-    /**
-     * @param string $authType
-     *
-     * @return $this
-     */
-    public function setAuthType($authType)
+    public function setAuthType(string $authType): void
     {
         $this->authType = $authType;
-
-        return $this;
     }
 
     /**
@@ -122,8 +54,8 @@ class Client implements HttpClient
         if ($this->username || $this->password) {
             switch ($this->authType) {
                 case self::AUTHTYPE_BASIC:
-                    $pass = base64_encode($this->username.':'.$this->password);
-                    $authentication = 'Basic '.$pass;
+                    $pass = base64_encode($this->username . ':' . $this->password);
+                    $authentication = 'Basic ' . $pass;
                     break;
 
                 case self::AUTHTYPE_DIGEST:

@@ -5,33 +5,12 @@ namespace Smalot\Cups\Builder;
 use Smalot\Cups\CupsException;
 use Symfony\Component\Yaml\Parser;
 
-/**
- * Class Builder
- *
- * @package Smalot\Cups\Builder
- */
 class Builder
 {
-
-    /**
-     * @var array
-     */
-    protected $tagsTypes = [];
-
-    /**
-     * @var array
-     */
-    protected $operationTags = [];
-
-    /**
-     * @var array
-     */
-    protected $jobTags = [];
-
-    /**
-     * @var array
-     */
-    protected $printerTags = [];
+    protected array $tagsTypes = [];
+    protected array $operationTags = [];
+    protected array $jobTags = [];
+    protected array $printerTags = [];
 
     /**
      * Builder constructor.
