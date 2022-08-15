@@ -5,23 +5,28 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Sebastien Malot",
-            "email": "sebastien@malot.fr"
+            "name": "Fixami Netherlands B.V.",
+            "email": "ict@fixami.com"
         }
     ],
     "require": {
         "php": ">=7.4",
-        "php-http/socket-client": "*",
+        "php-http/socket-client": "dev-master#93df2cc24c1b59a40ab7fc9d416e32964cdcc839",
         "php-http/client-common": "*",
         "php-http/message": "*",
-	"psr/http-client": "^1.0.1",
+        "psr/http-client": "^1.0.1",
         "guzzlehttp/psr7": "*",
         "symfony/yaml": "*"
     },
     "require-dev": {
-        "symfony/debug": "*",
         "atoum/atoum": "*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:php-http/socket-client.git"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "suggest": {
