@@ -25,10 +25,7 @@ require: {
 
 ## Requirements
 
-This library use unix sock connection: `unix:///var/run/cups/cups.sock`
-
-First of all, check if you have correct access to this file: `/var/run/cups/cups.sock`
-
+This library requires the use of the CUPS HTTP API. As default base URI, you can use: `http://localhost:631/`.
 
 ## Implementation
 
